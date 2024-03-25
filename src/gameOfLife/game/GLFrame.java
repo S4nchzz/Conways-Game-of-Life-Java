@@ -20,6 +20,8 @@ public class GLFrame extends JFrame implements MouseListener {
 
         gen = new Generation(this);
         addMouseListener(this);
+
+        gen.setPixel();
     }
 
     @Override
@@ -29,7 +31,7 @@ public class GLFrame extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        gen.setPixel(e.getX(), e.getY());
+       
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
@@ -18,47 +19,40 @@ public class Generation {
     private final Rules r;
 
     private final Graphics g;
+    private int w;
+    private int h;
+
+    private final Random rm;
     
     public Generation (JFrame frame) {
         dim = frame.getSize();
         insets = frame.getInsets();
         
-        int w = dim.width - insets.left + 1;
-        int h = dim.height - insets.bottom + insets.top;
+        w = dim.width - insets.left + 1;
+        h = dim.height - insets.bottom + insets.top;
         this.gen = new boolean[w][h];
         this.nextGen = new boolean[w][h];
 
         this.r = new Rules();
 
         g = frame.getGraphics();
+
+        rm = new Random();
     }
 
-    public void setPixel(int mouseX, int mouseY) {
-        gen[mouseX][mouseY] = true;
-        gen[mouseX + 1][mouseY + 1] = true;
-        gen[mouseX + 2][mouseY + 1] = true;
-        gen[mouseX + 2][mouseY] = true;
-        gen[mouseX + 1][mouseY - 1] = true;
-
-        // Pintamos las células vivas
-        g.setColor(Color.WHITE);
-        g.drawLine(mouseX, mouseY, mouseX, mouseY);
-        g.drawLine(mouseX + 1, mouseY + 1, mouseX + 1, mouseY + 1);
-        g.drawLine(mouseX + 2, mouseY + 1, mouseX + 2, mouseY + 1);
-        g.drawLine(mouseX + 2, mouseY, mouseX + 2, mouseY);
-        g.drawLine(mouseX + 1, mouseY - 1, mouseX + 1, mouseY - 1);
+    public void setPixel() {
+        for (int x = w / 2 - 100; x < w / 2 + 100; x++) {
+            for (int y = h / 2 - 100; y < h / 2 + 100; y++) {
+                gen[x][y] = rm.nextBoolean();
+            }
+        }
 
         startAnimation();
     }
 
     private void startAnimation () {
         while (true) {
-            try {
-                Thread.sleep(1); // Espera 100 milisegundos entre cada generación
-                generateGeneration();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            generateGeneration();
         }
     }
 
