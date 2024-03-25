@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class GLFrame extends JFrame implements MouseListener {
+    private final Generation gen;
+
     public GLFrame () {
         setTitle("Game Of Life");
         setVisible(true);
@@ -16,17 +18,18 @@ public class GLFrame extends JFrame implements MouseListener {
 
         getContentPane().setBackground(Color.BLACK);
 
+        gen = new Generation(this);
         addMouseListener(this);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        new Generation(this, e.getX(), e.getY());
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-       
+        gen.setPixel(e.getX(), e.getY());
     }
 
     @Override
